@@ -21,7 +21,7 @@ class TimeSeries:
         self.polarity = True if random.randint(0, 1) == 1 else False
         self.pool_boundary = self.pool_size - self.pool_size * prob_a / prob_b
 
-    def next_tick(self) -> (int, int):
+    def next_tick(self) -> (int, int, int):
         if random.randint(0, self.pool_size) >= self.pool_boundary:
             self.polarity = not self.polarity
 

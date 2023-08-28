@@ -86,13 +86,13 @@ def tri_area(a, b):
         return 0.00
 
 
-def lucas_sequence(n, sequence_list=None):
-
-    if sequence_list is None:
-        sequence_list = [1, 1]
-
-    if n > 2:
-        for f in range(n - 2):
-            sequence_list.append(sequence_list[f] + sequence_list[f + 1])
+def lucas_sequence(n=1, a=2, b=1):
+    sequence_list = []
+    for n in range(1, n + 1):
+        sequence_list.append(lucas(n, a, b))
 
     return sequence_list
+
+
+def lucas(n, a, b):
+    return lucas(n - 1, b, a + b) if n else a

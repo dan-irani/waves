@@ -1,18 +1,20 @@
 class Cycle:
-    def __init__(self, _cycle_size, _cycle_phase):
-        self.cycle_size = _cycle_size
-        self.max_phase = 2 * _cycle_size
+    def __init__(self, _length, _phase_initial):
+        self.length = _length
+        self.phase_max = 2 * _length
+        self.phase_initial = _phase_initial
 
-        # now adjust start phase to be one phase earlier
+        # ensure initial phase is between 1 and (2 * cycle length)
+        if not 1 <= self.phase_initial <= self.phase_max:
+            self.phase_initial = (self.phase_initial % self.phase_max)
+
+        # adjust start phase to be one phase earlier
         # so the first tick is correct after increment
 
-        self.start_phase = _cycle_phase - 1
-
-        if not 1 <= self.start_phase <= self.max_phase:
-            self.start_phase = 10
-
-        self.phase = self.start_phase
+        self.phase_current = self.phase_initial - 1
 
     def next_tick(self):
-        self.phase = (self.phase % self.max_phase) + 1
-        return 1 if self.phase <= self.cycle_size else -1
+        # return +1 if phase is between 1 and length
+        # return -1 if phase is between (length + 1) and (2 * length)
+        self.phase_current = (self.phase_current % self.phase_max) + 1
+        return 1 if self.phase_current <= self.length else -1
