@@ -7,9 +7,11 @@ from models.freqdist import FreqDist
 
 class CycleSeries:
 
-    def __init__(self, cycle_length_list, rand_seed=None, increment_is_netted=True):
+    def __init__(self, cycle_length_list, _cycle_phase_list=None, rand_seed=None, increment_is_netted=True):
 
         self.cycle_object_list = []  # list of cycle objects
+        self.cycle_phase_list = []  # list of starting phases for defined cycles
+
         self.cycle_count = len(cycle_length_list)
         self.increment_is_netted = increment_is_netted
         self.freq_dist = FreqDist()
@@ -22,16 +24,22 @@ class CycleSeries:
 
         random.seed(self.seed_value)
 
+        for i in range(0, len(cycle_length_list)):
+
+            length = cycle_length_list[i]
+
+            if _cycle_phase_list is not None and i < len(_cycle_phase_list):
+                phase = _cycle_phase_list[i]
+            else:
+                # cycle phase is currently random between 1 and (2 * cycle length)
+                phase = random.randint(a=1, b=2 * length)
+
+            self.cycle_object_list.append(Cycle(length, phase))
+
         self.index = 0
         self.time = 0
         self.cycle_index = 0
         self.tick_inc = 0
-
-        for length in cycle_length_list:
-            # cycle phase is currently random between 1 and (2 * cycle length)
-            cycle_phase = random.randint(a=1, b=2 * length)
-            # cycle_phase = 1
-            self.cycle_object_list.append(Cycle(length, cycle_phase))
 
     def show_start_conditions(self):
 
